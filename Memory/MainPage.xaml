@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Memory.MainPage">
+    <Grid>
+        <VerticalStackLayout>
+            <Label Style="{StaticResource Headline}" Text="Memory"/>
+            <Button Style="{StaticResource OptionBtn}" Text="Normal mode" Clicked="Normal_Clicked"/>
+            <Button Style="{StaticResource OptionBtn}" Text="Random colors mode" Clicked="RandomColor_Clicked"/>
+            <Button Style="{StaticResource OptionBtn}" Text="Settings" Clicked="Settings_Clicked"/>
+        </VerticalStackLayout>
+        <Grid x:Name="LoadingOverlay" BackgroundColor="Black" Opacity="0.5" IsVisible="False">
+            <ActivityIndicator IsRunning="True" VerticalOptions="Center" HorizontalOptions="Center" Color="White"/>
+        </Grid>
+    </Grid>
+</ContentPage>
