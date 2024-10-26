@@ -2,13 +2,38 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Memory.MainPage">
-    <Grid>
-        <VerticalStackLayout>
-            <Label Style="{StaticResource Headline}" Text="Memory"/>
-            <Button Style="{StaticResource OptionBtn}" Text="Normal mode" Clicked="Normal_Clicked"/>
-            <Button Style="{StaticResource OptionBtn}" Text="Random colors mode" Clicked="RandomColor_Clicked"/>
-        </VerticalStackLayout>
-        <Grid x:Name="LoadingOverlay" BackgroundColor="Black" Opacity="0.5" IsVisible="False">
+
+    <Grid BackgroundColor="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Button BackgroundColor="Red" Margin="10" x:Name="First" Opacity="0.5"/>
+        <Button BackgroundColor="Blue" Grid.Row="1" Margin="10" x:Name="Second" Opacity="0.5"/>
+        <Button BackgroundColor="Green" Grid.Column="1" Margin="10" x:Name="Three"  Opacity="0.5"/>
+        <Button BackgroundColor="Yellow" Grid.Column="1" Grid.Row="1" Margin="10" x:Name="Four" Opacity="0.5"/>
+
+        <Grid x:Name="StopOverlay" BackgroundColor="#70000000" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+
+            <FlexLayout BackgroundColor="#DC606060" Grid.Row="1" Direction="Column" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                <Label Style="{StaticResource Headline}" Text="Memory"/>
+                <Button Style="{StaticResource OptionBtn}" Text="Normal mode" Clicked="Normal_Clicked"/>
+                <Button Style="{StaticResource OptionBtn}" Text="Random colors mode" Clicked="RandomColor_Clicked"/>
+            </FlexLayout>
+        </Grid>
+
+
+        <Grid x:Name="LoadingOverlay" BackgroundColor="Black" Opacity="0.5" IsVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <ActivityIndicator IsRunning="True" VerticalOptions="Center" HorizontalOptions="Center" Color="White"/>
         </Grid>
     </Grid>

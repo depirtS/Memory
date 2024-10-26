@@ -1,3 +1,4 @@
+using Plugin.Maui.Audio;
 using System.Collections;
 using System.Linq.Expressions;
 
@@ -11,6 +12,8 @@ public partial class PlayPage : ContentPage
         return true;
     }
 
+    private IAudioManager _audioManager;
+    private IAudioPlayer _errorSound;
     private Dictionary<string, Field> Fields { get; set; }
     private bool Play { get; set; }
     private bool Continue { get; set; }
@@ -27,7 +30,7 @@ public partial class PlayPage : ContentPage
         InitializeValues();
     }
 
-    private void InitializeValues()
+    private async void InitializeValues()
     {
         NormalRecordLabel.Text = "Record in normal mode: " + Preferences.Get("normalRecord", 0);
         RandomColorsRecordLabel.Text = "Record in random colors mode: " + Preferences.Get("randomColorsRecord", 0);
@@ -35,10 +38,13 @@ public partial class PlayPage : ContentPage
         Continue = false;
         Random = new Random();
         Fields = new Dictionary<string, Field>();
-        Fields.Add("1", new Field(First));
-        Fields.Add("2", new Field(Second));
-        Fields.Add("3", new Field(Three));
-        Fields.Add("4", new Field(Four));
+        Fields.Add("1", new Field(First, "first.mp3"));
+        Fields.Add("2", new Field(Second, "second.mp3"));
+        Fields.Add("3", new Field(Three, "three.mp3"));
+        Fields.Add("4", new Field(Four, "four.mp3"));
+
+        _audioManager = AudioManager.Current;
+        _errorSound = _audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("incorrect.mp3"));
     }
 
     private void setButtonColors()
@@ -105,7 +111,9 @@ public partial class PlayPage : ContentPage
     }
     private async void MistakeField_Clicked(Button btn)
     {
+
         Continue = false;
+        _errorSound?.Play();
         await btn.FadeTo(0.1, 250, Easing.CubicOut);
         await btn.FadeTo(0.5, 250, Easing.CubicIn);
 
@@ -119,6 +127,7 @@ public partial class PlayPage : ContentPage
 
     private void SaveCurrentRecord()
     {
+        CurrentScore.Text = "Score: " + (FieldSequence.Count() - 1);
         if (NormalMode)
         {
             if (Preferences.Default.ContainsKey("normalRecord"))

@@ -14,8 +14,8 @@
         </Grid.ColumnDefinitions>
 
         <Button BackgroundColor="Red" Margin="10" x:Name="First" Clicked="Button_Clicked" Text="1" TextColor="#00000000" Opacity="0.5"/>
-        <Button BackgroundColor="Green" Grid.Row="1" Margin="10" x:Name="Second" Clicked="Button_Clicked" Text="2" TextColor="#00000000" Opacity="0.5"/>
-        <Button BackgroundColor="Blue" Grid.Column="1" Margin="10" x:Name="Three" Clicked="Button_Clicked" Text="3" TextColor="#00000000" Opacity="0.5"/>
+        <Button BackgroundColor="Blue" Grid.Row="1" Margin="10" x:Name="Second" Clicked="Button_Clicked" Text="2" TextColor="#00000000" Opacity="0.5"/>
+        <Button BackgroundColor="Green" Grid.Column="1" Margin="10" x:Name="Three" Clicked="Button_Clicked" Text="3" TextColor="#00000000" Opacity="0.5"/>
         <Button BackgroundColor="Yellow" Grid.Column="1" Grid.Row="1" Margin="10" x:Name="Four" Clicked="Button_Clicked" Text="4" TextColor="#00000000" Opacity="0.5"/>
 
         <Grid x:Name="StopOverlay" BackgroundColor="#70000000" Grid.ColumnSpan="2" Grid.RowSpan="2">
@@ -26,13 +26,13 @@
             </Grid.RowDefinitions>
 
             <FlexLayout BackgroundColor="#DC606060" Grid.Row="1" Direction="Column" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                <Label FontSize="18" HorizontalOptions="Center" x:Name="CurrentScore"/>
                 <Label FontSize="18" HorizontalOptions="Center" x:Name="NormalRecordLabel"/>
                 <Label FontSize="18" HorizontalOptions="Center" x:Name="RandomColorsRecordLabel"/>
-                <Button Text="Play" FontSize="18" Padding="20" BackgroundColor="Wheat" BorderWidth="5" BorderColor="Black" Clicked="Play_Clicked"/>
+                <Button Text="Play" Style="{StaticResource OptionBtn}" Clicked="Play_Clicked"/>
             </FlexLayout>
         </Grid>
 
-        
         <Grid x:Name="LoadingOverlay" BackgroundColor="Black" Opacity="0.5" IsVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <ActivityIndicator IsRunning="True" VerticalOptions="Center" HorizontalOptions="Center" Color="White"/>
         </Grid>
