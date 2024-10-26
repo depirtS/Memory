@@ -14,21 +14,23 @@ public partial class PlayPage : ContentPage
     private Dictionary<string, Field> Fields { get; set; }
     private bool Play { get; set; }
     private bool Continue { get; set; }
+    private bool NormalMode { get; set; }
     private Random Random { get; set; }
     private List<string> FieldSequence { get; set; }
     private int SequenceClickCount { get; set; }
 
     public PlayPage(bool colors)
-	{
-		NavigationPage.SetHasNavigationBar(this, false);
-		InitializeComponent();
+    {
+        NormalMode = colors;
+        NavigationPage.SetHasNavigationBar(this, false);
+        InitializeComponent();
         InitializeValues();
-        setButtonColors(colors);
     }
 
     private void InitializeValues()
     {
-        RecordLabel.Text = "Record: " + Preferences.Get("record", 0);
+        NormalRecordLabel.Text = "Record in normal mode: " + Preferences.Get("normalRecord", 0);
+        RandomColorsRecordLabel.Text = "Record in random colors mode: " + Preferences.Get("randomColorsRecord", 0);
         Play = false;
         Continue = false;
         Random = new Random();
@@ -39,16 +41,23 @@ public partial class PlayPage : ContentPage
         Fields.Add("4", new Field(Four));
     }
 
-    private void setButtonColors(bool colors)
+    private void setButtonColors()
     {
-        if(!colors)
+        List<Color> colorsList = new List<Color>();
+        foreach (Color color in GlobalManager.colorsList.Values)
         {
-            //random colors
+            colorsList.Add(color);
         }
+        First.BackgroundColor = Color.FromArgb(colorsList[Random.Next(colorsList.Count() - 1) + 1].ToHex());
+        Second.BackgroundColor = Color.FromArgb(colorsList[Random.Next(colorsList.Count() - 1) + 1].ToHex());
+        Three.BackgroundColor = Color.FromArgb(colorsList[Random.Next(colorsList.Count() - 1) + 1].ToHex());
+        Four.BackgroundColor = Color.FromArgb(colorsList[Random.Next(colorsList.Count() - 1) + 1].ToHex());
     }
 
     private void Play_Clicked(object sender, EventArgs e)
     {
+        if (!NormalMode)
+            setButtonColors();
         StopOverlay.IsVisible = false;
         Play = true;
         Continue = true;
@@ -68,7 +77,7 @@ public partial class PlayPage : ContentPage
             else
                 MistakeField_Clicked(btn);
 
-            if(SequenceClickCount == FieldSequence.Count() - 1 && Continue)
+            if (SequenceClickCount == FieldSequence.Count() - 1 && Continue)
             {
                 SequenceClickCount = -1;
                 AddNextField();
@@ -80,14 +89,14 @@ public partial class PlayPage : ContentPage
 
     private void AddNextField()
     {
-        int idField = Random.Next(Fields.Count)+ 1;
+        int idField = Random.Next(Fields.Count) + 1;
         FieldSequence.Add(idField.ToString());
     }
     private async void AnimateFieldSequence()
     {
         Play = false;
         await Task.Delay(1000);
-        foreach(var field in FieldSequence)
+        foreach (var field in FieldSequence)
         {
             Fields[field].AnimateButtonClick();
             await Task.Delay(501);
@@ -101,21 +110,41 @@ public partial class PlayPage : ContentPage
         await btn.FadeTo(0.5, 250, Easing.CubicIn);
 
         SaveCurrentRecord();
-        RecordLabel.Text = "Record: " + Preferences.Get("record", 0);
+        if (NormalMode)
+            NormalRecordLabel.Text = "Record in normal mode: " + Preferences.Get("normalRecord", 0);
+        else
+            RandomColorsRecordLabel.Text = "Record in random colors mode: " + Preferences.Get("randomColorsRecord", 0);
         StopOverlay.IsVisible = true;
     }
 
     private void SaveCurrentRecord()
     {
-        if (Preferences.Default.ContainsKey("record"))
+        if (NormalMode)
         {
-            int currentRecord = Preferences.Get("record", 0);
-            if(currentRecord < FieldSequence.Count()-1)
-                Preferences.Set("record", FieldSequence.Count() - 1);
+            if (Preferences.Default.ContainsKey("normalRecord"))
+            {
+                int currentRecord = Preferences.Get("normalRecord", 0);
+                if (currentRecord < FieldSequence.Count() - 1)
+                    Preferences.Set("normalRecord", FieldSequence.Count() - 1);
+            }
+            else
+            {
+                Preferences.Set("normalRecord", FieldSequence.Count() - 1);
+            }
         }
         else
         {
-            Preferences.Set("record", 0);
+            if (Preferences.Default.ContainsKey("randomColorsRecord"))
+            {
+                int currentRecord = Preferences.Get("randomColorsRecord", 0);
+                if (currentRecord < FieldSequence.Count() - 1)
+                    Preferences.Set("randomColorsRecord", FieldSequence.Count() - 1);
+            }
+            else
+            {
+                Preferences.Set("randomColorsRecord", FieldSequence.Count() - 1);
+            }
         }
+
     }
 }

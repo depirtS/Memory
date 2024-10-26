@@ -18,11 +18,6 @@
         {
             GlobalManager.LoadingOverlay(LoadingOverlay, Navigation, new PlayPage(false));
         }
-
-        private void Settings_Clicked(object sender, EventArgs e)
-        {
-
-        }
     }
 
 }

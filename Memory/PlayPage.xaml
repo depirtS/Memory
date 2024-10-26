@@ -26,7 +26,8 @@
             </Grid.RowDefinitions>
 
             <FlexLayout BackgroundColor="#DC606060" Grid.Row="1" Direction="Column" Wrap="Wrap" JustifyContent="SpaceEvenly">
-                <Label Text="Record: " FontSize="18" HorizontalOptions="Center" x:Name="RecordLabel"/>
+                <Label FontSize="18" HorizontalOptions="Center" x:Name="NormalRecordLabel"/>
+                <Label FontSize="18" HorizontalOptions="Center" x:Name="RandomColorsRecordLabel"/>
                 <Button Text="Play" FontSize="18" Padding="20" BackgroundColor="Wheat" BorderWidth="5" BorderColor="Black" Clicked="Play_Clicked"/>
             </FlexLayout>
         </Grid>
